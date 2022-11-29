@@ -40,7 +40,7 @@ public class NuevoJuego extends JFrame implements ActionListener {
                 int tam = Integer.parseInt(dimencionesTablero.getText());
 
                 if (tam <= 100) {
-                    Interfaz interfaz = new Interfaz(tam);
+                    new Interfaz(tam);
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "El tamaño de la matriz, no puede superar las 100 celdas");

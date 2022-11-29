@@ -4,9 +4,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.ForkJoinPool;
 
 public class Interfaz extends JFrame implements ActionListener {
-    private Matriz matriz;
-    private Juego juego;
-    private JuegoES juegoExecutor;
+    private Controlador controlador;
     private JPanel panelMatriz;
     private JLabel celda[][];
     private JLabel tiempoSecuencial, tiempoJorkJoin, tiempoExecutor;
@@ -17,9 +15,7 @@ public class Interfaz extends JFrame implements ActionListener {
         getContentPane().setBackground(new java.awt.Color(59, 63, 65));
         setLocationRelativeTo(null);
         crearControles();
-        this.matriz = new Matriz(dimensiones);
-        this.juego = new Juego(matriz);
-        this.juegoExecutor = new JuegoES(matriz);
+        this.controlador = new Controlador(dimensiones);
         this.celda = new JLabel[dimensiones][dimensiones];
         crearTablero(1, (400 / dimensiones) - 1);
 
@@ -32,7 +28,7 @@ public class Interfaz extends JFrame implements ActionListener {
     private void crearControles() {
 
         panelMatriz = new JPanel();
-        panelMatriz.setBounds(360, 15, 400, 400400);
+        panelMatriz.setBounds(360, 15, 400, 400);
         panelMatriz.setBackground(new java.awt.Color(59, 63, 65));
         panelMatriz.setOpaque(true);
         panelMatriz.setLayout(null);
@@ -91,10 +87,10 @@ public class Interfaz extends JFrame implements ActionListener {
         }
     }
 
-    private void actualizarTablero(boolean celulas[][]) {
+    private void actualizarTablero() {
         for (int i = 0; i < celda.length; i++) {
             for (int j = 0; j < celda[i].length; j++) {
-                if (celulas[i][j]) {
+                if (controlador.getCelula(i, j)) {
                     celda[i][j].setBackground(new java.awt.Color(245, 245, 245));
                 } else {
                     celda[i][j].setBackground(new java.awt.Color(44, 44, 44));
@@ -107,38 +103,31 @@ public class Interfaz extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent evento) {
 
         if (evento.getSource() == regresar) {
-            NuevoJuego nuevo = new NuevoJuego();
+            new NuevoJuego();
             dispose();
         }
 
         if (evento.getSource() == inicializar) {
-            matriz.llenarAleatorio();
-            actualizarTablero(matriz.getCelulas());
+            controlador.inicializarJuego();
+            actualizarTablero();
         }
 
         if (evento.getSource() == avanzarSecuencial) {
-            long inicio = System.currentTimeMillis();
-            juego.actualizarJuego();
-            actualizarTablero(matriz.getCelulas());
-            long tiempoTotal = (System.currentTimeMillis() - inicio);
-            tiempoSecuencial.setText("Tiempo: " + tiempoTotal + " ms");
+            controlador.avanzarSecuencial();
+            actualizarTablero();
+            tiempoSecuencial.setText("Tiempo: " + controlador.getTiempo() + " ms");
         }
 
         if (evento.getSource() == avanzarJorkJoin) {
-            ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
-            long inicio = System.currentTimeMillis();
-            pool.invoke(new JuegoFJ(matriz));
-            actualizarTablero(matriz.getCelulas());
-            long tiempoTotal = (System.currentTimeMillis() - inicio);
-            tiempoJorkJoin.setText("Tiempo: " + tiempoTotal + " ms");
+            controlador.avanzarJorkJoin();
+            actualizarTablero();
+            tiempoJorkJoin.setText("Tiempo: " + controlador.getTiempo() + " ms");
         }
 
         if (evento.getSource() == avanzarExecutor) {
-            long inicio = System.currentTimeMillis();
-            juegoExecutor.actualizarJuego();
-            actualizarTablero(matriz.getCelulas());
-            long tiempoTotal = (System.currentTimeMillis() - inicio);
-            tiempoExecutor.setText("Tiempo: " + tiempoTotal + " ms");
+            controlador.avanzarExecutor();
+            actualizarTablero();
+            tiempoExecutor.setText("Tiempo: " + controlador.getTiempo() + " ms");
         }
     }
 }

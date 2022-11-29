@@ -53,6 +53,10 @@ public class Matriz {
         return matriz;
     }
 
+    public boolean getCelula(int posX, int posY) {
+        return celulas[posX][posY];
+    }
+
     public void setCelulas(boolean celulas[][]) {
         for (int i = 0; i < tamaño; i++) {
             this.celulas[i] = Arrays.copyOf(celulas[i], tamaño);
