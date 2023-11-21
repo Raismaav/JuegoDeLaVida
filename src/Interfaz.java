@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.ForkJoinPool;
 
 public class Interfaz extends JFrame implements ActionListener {
+    private int dimensiones;
     private Controlador controlador;
     private JPanel panelMatriz;
     private JLabel celda[][];
@@ -15,7 +16,8 @@ public class Interfaz extends JFrame implements ActionListener {
         getContentPane().setBackground(new java.awt.Color(59, 63, 65));
         setLocationRelativeTo(null);
         crearControles();
-        this.controlador = new Controlador(dimensiones);
+        this.dimensiones = dimensiones;
+        this.controlador = new Controlador();
         this.celda = new JLabel[dimensiones][dimensiones];
         crearTablero(1, (400 / dimensiones) - 1);
 
@@ -108,7 +110,7 @@ public class Interfaz extends JFrame implements ActionListener {
         }
 
         if (evento.getSource() == inicializar) {
-            controlador.inicializarJuego();
+            controlador.inicializarJuego(dimensiones);
             actualizarTablero();
         }
 

@@ -7,17 +7,14 @@ public class Controlador {
     private long inicio;
     private long tiempoTotal;
 
-    Controlador(int dimensiones) {
-        this.matriz = new Matriz(dimensiones);
-        this.juego = new Juego(matriz);
-        this.juegoExecutor = new JuegoES(matriz);
-    }
-
     public boolean getCelula(int posX, int posY) {
         return matriz.getCelula(posX, posY);
     }
 
-    public void inicializarJuego() {
+    public void inicializarJuego(int dimensiones) {
+        this.matriz = new Matriz(dimensiones);
+        this.juego = new Juego(matriz);
+        this.juegoExecutor = new JuegoES(matriz);
         matriz.llenarAleatorio();
     }
 
