@@ -2,11 +2,13 @@ import java.util.Arrays;
 
 public class Matriz {
     private boolean celulas[][];
-    private int tamaño;
 
     public Matriz(int tamaño) {
         this.celulas = new boolean[tamaño][tamaño];
-        this.tamaño = tamaño;
+    }
+
+    public Matriz(int ancho, int alto) {
+        this.celulas = new boolean[ancho][alto];
     }
 
     public void llenar() {
@@ -45,10 +47,10 @@ public class Matriz {
     }
 
     public boolean[][] getCelulas() {
-        boolean matriz[][] = new boolean[tamaño][tamaño];
+        boolean matriz[][] = new boolean[celulas.length][celulas[0].length];
 
-        for (int i = 0; i < tamaño; i++) {
-            matriz[i] = Arrays.copyOf(this.celulas[i], tamaño);
+        for (int i = 0; i < celulas.length; i++) {
+            matriz[i] = Arrays.copyOf(this.celulas[i], celulas[i].length);
         }
         return matriz;
     }
@@ -58,8 +60,8 @@ public class Matriz {
     }
 
     public void setCelulas(boolean celulas[][]) {
-        for (int i = 0; i < tamaño; i++) {
-            this.celulas[i] = Arrays.copyOf(celulas[i], tamaño);
+        for (int i = 0; i < celulas.length; i++) {
+            this.celulas[i] = Arrays.copyOf(celulas[i], celulas[i].length);
         }
     }
 }
